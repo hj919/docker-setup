@@ -53,15 +53,19 @@ function createApp(){
 		exit 1
 	else
 		resetContainer phpfpm-"$appName"
-		docker pull php:5-fpm-alpine
-		docker run -d --name phpfpm-"$appName" --net=myNet -v "$DIR"/apps/"$appName"/htdocs:/htdocs php:5-fpm-alpine
-		# docker run -d --name phpfpm-"$appName" --net=myNet \
-		# -v "$DIR"/apps/"$appName"/htdocs:/htdocs \
-		# -v "$DIR"/apps/"$appName"/server/conf/php.ini:/etc/php7/php.ini \
-		# -v "$DIR"/apps/"$appName"/server/conf/php-fpm.conf:/etc/php7/php-fpm.conf \
-		# -v "$DIR"/apps/"$appName"/server/conf/php-fpm.d/www.conf:/etc/php7/php-fpm.d/www.conf \
-		# -v "$DIR"/apps/"$appName"/server/logs:/logs \
-		# my/phpfpm
+		if [ -n "$2" ]
+		then
+			docker pull php:5-fpm-alpine
+			docker run -d --name phpfpm-"$appName" --net=myNet -v "$DIR"/apps/"$appName"/htdocs:/htdocs php:5-fpm-alpine
+		else
+		docker run -d --name phpfpm-"$appName" --net=myNet \
+		-v "$DIR"/apps/"$appName"/htdocs:/htdocs \
+		-v "$DIR"/apps/"$appName"/server/conf/php.ini:/etc/php7/php.ini \
+		-v "$DIR"/apps/"$appName"/server/conf/php-fpm.conf:/etc/php7/php-fpm.conf \
+		-v "$DIR"/apps/"$appName"/server/conf/php-fpm.d/www.conf:/etc/php7/php-fpm.d/www.conf \
+		-v "$DIR"/apps/"$appName"/server/logs:/logs \
+		my/phpfpm
+		fi
 	fi
 }
 
@@ -110,14 +114,16 @@ function createContainer(){
 			docker run -d --name jenkins -p 8080:8080 -p 50000:50000 -v "$DIR"/jenkins:/var/jenkins_home -v "$DIR"/apps:/htdocs jenkins:alpine
       		;;
    		*) 
-      		appPath="$DIR"/apps/${arg}
+			appName=$(echo ${arg} | cut -d ':' -f1)
+			phpVer=$(echo ${arg} | cut -d ':' -f2)
+      		appPath="$DIR"/apps/${appName}
 			if [ -d "$appPath" ]
 			then
-				createApp ${arg}
-				vhostConf="$DIR"/apps/${arg}/server/conf/vhost.conf
+				createApp ${appName} ${phpVer}
+				vhostConf="$DIR"/apps/${appName}/server/conf/vhost.conf
 				if [ -f "$vhostConf" ]
 				then
-					cp -f "$vhostConf" "$DIR"/nginx/conf/conf.d/${arg}.conf
+					cp -f "$vhostConf" "$DIR"/nginx/conf/conf.d/${appName}.conf
 					serverName=$(cat "$vhostConf" | grep server_name |  head -1 | tr -s ' ' | cut -d ' ' -f3 | tr -d ';')
 
 					#添加 serverName 至 host文件
