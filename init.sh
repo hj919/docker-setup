@@ -53,19 +53,15 @@ function createApp(){
 		exit 1
 	else
 		resetContainer phpfpm-"$appName"
-		if [ $2 = 5 ]
-		then
-			docker pull php:5-fpm-alpine
-			docker run -d --name phpfpm-"$appName" --net=myNet -v "$DIR"/apps/"$appName"/htdocs:/htdocs php:5-fpm-alpine
-		else
-		docker run -d --name phpfpm-"$appName" --net=myNet \
-		-v "$DIR"/apps/"$appName"/htdocs:/htdocs \
-		-v "$DIR"/apps/"$appName"/server/conf/php.ini:/etc/php7/php.ini \
-		-v "$DIR"/apps/"$appName"/server/conf/php-fpm.conf:/etc/php7/php-fpm.conf \
-		-v "$DIR"/apps/"$appName"/server/conf/php-fpm.d/www.conf:/etc/php7/php-fpm.d/www.conf \
-		-v "$DIR"/apps/"$appName"/server/logs:/logs \
-		my/phpfpm
-		fi
+		docker pull php:5-fpm-alpine
+		docker run -d --name phpfpm-"$appName" --net=myNet -v "$DIR"/apps/"$appName"/htdocs:/htdocs php:5-fpm-alpine
+		# docker run -d --name phpfpm-"$appName" --net=myNet \
+		# -v "$DIR"/apps/"$appName"/htdocs:/htdocs \
+		# -v "$DIR"/apps/"$appName"/server/conf/php.ini:/etc/php7/php.ini \
+		# -v "$DIR"/apps/"$appName"/server/conf/php-fpm.conf:/etc/php7/php-fpm.conf \
+		# -v "$DIR"/apps/"$appName"/server/conf/php-fpm.d/www.conf:/etc/php7/php-fpm.d/www.conf \
+		# -v "$DIR"/apps/"$appName"/server/logs:/logs \
+		# my/phpfpm
 	fi
 }
 
@@ -117,14 +113,7 @@ function createContainer(){
       		appPath="$DIR"/apps/${arg}
 			if [ -d "$appPath" ]
 			then
-			    phpVer = $(echo ${arg} | cut -d ':' -f2)
-			    if [ ${phpVer} = 5 ]
-				then
-					createApp ${arg} 5
-				else
-					createApp ${arg}
-				fi
-				 
+				createApp ${arg}
 				vhostConf="$DIR"/apps/${arg}/server/conf/vhost.conf
 				if [ -f "$vhostConf" ]
 				then
