@@ -137,6 +137,6 @@ function createContainer(){
 	fi
 	done  
 }
-
+createNetwork
 createContainer $@
 
