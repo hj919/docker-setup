@@ -53,13 +53,13 @@ function createApp(){
 		then
 			docker run -d --name phpfpm-"$appName" --net=myNet \
 			-v "$DIR"/apps/"$appName"/htdocs:/htdocs \
-			-v "$DIR"/apps/"$appName"/server/logs:/logs \
+			-v "$DIR"/apps/"$appName"/logs:/logs \
 			-v "$phpfpmConfigFile":/usr/local/etc/php-fpm.d/zz-docker.conf \
 			--restart=always my/phpfpm"$2"
 		else
 			docker run -d --name phpfpm-"$appName" --net=myNet \
 			-v "$DIR"/apps/"$appName"/htdocs:/htdocs \
-			-v "$DIR"/apps/"$appName"/server/logs:/logs \
+			-v "$DIR"/apps/"$appName"/logs:/logs \
 			--restart=always my/phpfpm"$2"
 		fi	
 	fi
