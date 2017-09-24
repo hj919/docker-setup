@@ -102,7 +102,7 @@ function createContainer(){
 			resetContainer gogs
 			mkdir -p "$DIR"/gogs
 			# Use `docker run` for the first time.
-			docker run  -d --name=gogs -p 10022:22 -p 10080:3000 -v "$DIR"/gogs:/data --restart=always gogs/gogs
+			docker run  -d --name=gogs --net=myNet -p 10022:22 -p 10080:3000 -v "$DIR"/gogs:/data --restart=always gogs/gogs
 			# Use `docker start` if you have stopped it.
 			#docker start gogs
       		;;
@@ -111,7 +111,7 @@ function createContainer(){
       		resetContainer jenkins
 			mkdir -p "$DIR"/jenkins
 			chmod 777 "$DIR"/jenkins
-			docker run -d --name jenkins -p 8080:8080 -p 50000:50000 -v "$DIR"/jenkins:/var/jenkins_home -v "$DIR"/apps:/htdocs --restart=always jenkins:alpine
+			docker run -d --name jenkins --net=myNet -p 8080:8080 -p 50000:50000 -v "$DIR"/jenkins:/var/jenkins_home -v "$DIR"/apps:/htdocs --restart=always jenkins:alpine
       		;;
    		*) 
 			appName=$(echo ${arg} | cut -d ':' -f1)
