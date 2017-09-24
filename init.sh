@@ -111,7 +111,7 @@ function createContainer(){
       		resetContainer jenkins
 			mkdir -p "$DIR"/jenkins
 			chmod 777 "$DIR"/jenkins
-			docker run -d --name jenkins --net=myNet -p 8080:8080 -p 50000:50000 -v "$DIR"/jenkins:/var/jenkins_home -v "$DIR"/apps:/var/jenkins_home/workspace --restart=always jenkins:alpine
+			docker run -d --name jenkins --net=myNet -p 8080:8080 -p 50000:50000 -v "$DIR"/jenkins:/var/jenkins_home -v "$DIR"/apps:/htdocs --restart=always jenkins:alpine
       		;;
    		*) 
 			appName=$(echo ${arg} | cut -d ':' -f1)
