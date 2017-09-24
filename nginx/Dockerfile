@@ -1,11 +1,10 @@
-FROM my/alpine
-# 软件包安装
-RUN apk --update add nginx
+FROM nginx:alpine
 
-# 软件包参数配置
-RUN mkdir /run/nginx
-RUN mkdir /htdocs
-RUN mkdir /logs
+RUN echo 'http://mirrors.aliyun.com/alpine/v3.6/main' > /etc/apk/repositories
+RUN echo '@community http://mirrors.aliyun.com/alpine/v3.6/community' >> /etc/apk/repositories
+
+
+RUN mkdir /htdocs /logs
 
 WORKDIR /htdocs
 VOLUME /htdocs

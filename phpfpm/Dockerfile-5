@@ -1,0 +1,32 @@
+FROM php:7.1-fpm-alpine
+
+MAINTAINER jie <2273828010@qq.com>
+
+RUN set -xe \
+  && echo 'http://mirrors.aliyun.com/alpine/latest-stable/main' > /etc/apk/repositories \
+  && echo '@community http://mirrors.aliyun.com/alpine/latest-stable/community' >> /etc/apk/repositories \
+  && ln -snf /usr/share/zoneinfo/$TIMEZONE /etc/localtime \
+  && echo "Asia/Shanghai" >  /etc/timezone \
+  \
+  && apk add --no-cache  --virtual .phpize-deps  $PHPIZE_DEPS \
+
+  && apk add --update --no-cache \
+        freetype-dev \
+        gettext-dev \
+        libjpeg-turbo-dev \
+        libpng-dev \
+        libmcrypt-dev \
+   
+    && docker-php-ext-configure gd \
+       --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/ \
+
+    && docker-php-ext-install mcrypt pdo_mysql gd\
+
+    && pecl install -o -f redis  \
+    && docker-php-ext-enable redis \
+
+    && rm -rf /usr/share/php \
+    && rm -rf /tmp/* \
+    && rm -rf /var/cache/apk/* \
+    && rm -rf /usr/scr/* \
+    && apk del  .phpize-deps

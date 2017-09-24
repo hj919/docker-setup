@@ -1,13 +1,5 @@
-FROM my/alpine
+FROM redis:4-alpine
 
-# 软件包安装
-
-RUN apk --update add redis
-
-RUN mkdir /data
-VOLUME /data
-WORKDIR /data
-
-EXPOSE 6379
-
-CMD ["redis-server","/etc/redis.conf"]
+ENV TIMEZONE Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TIMEZONE /etc/localtime
+RUN echo $TIMEZONE > /etc/timezone
