@@ -6,7 +6,7 @@
 * open http://xxx.dev/
 
 # 目录结构说明
-|- apps 各应用的存放目录
+`|- apps 各应用的存放目录
   |-deault 默认应用
     |-htdocs 应用代码存放
     |-phpfpm.conf 容器phpfpm环境配置文件
@@ -16,4 +16,4 @@
 |- phpfpm
 |- redis
 |- gogs
-|- jenkins
+|- jenkins`
