@@ -100,18 +100,17 @@ function createContainer(){
       		# 安装版本控制服务器
 			docker pull gogs/gogs
 			resetContainer gogs
-			mkdir -p "$DIR"/gogs
+			mkdir -p "$DIR"/gogs/data
 			# Use `docker run` for the first time.
-			docker run  -d --name=gogs --net=myNet -p 10022:22 -p 10080:3000 -v "$DIR"/gogs:/data --restart=always gogs/gogs
+			docker run  -d --name=gogs --net=myNet -p 10022:22 -p 10080:3000 -v "$DIR"/gogs/data:/data --restart=always gogs/gogs
 			# Use `docker start` if you have stopped it.
 			#docker start gogs
       		;;
       	'jenkins') 
-      		docker pull jenkins:alpine
+      		docker build -t my/jenkins "$DIR"/jenkins
       		resetContainer jenkins
-			mkdir -p "$DIR"/jenkins
-			chmod 777 "$DIR"/jenkins
-			docker run -d --name jenkins --net=myNet -p 8080:8080 -p 50000:50000 -v "$DIR"/jenkins:/var/jenkins_home -v "$DIR"/apps:/htdocs --restart=always jenkins:alpine
+			mkdir -p "$DIR"/jenkins/data
+			docker run -d --name jenkins --net=myNet -p 8080:8080 -p 50000:50000 -v "$DIR"/jenkins/data:/var/jenkins_home -v "$DIR"/apps:/htdocs --restart=always my/jenkins
       		;;
    		*) 
 			appName=$(echo ${arg} | cut -d ':' -f1)
