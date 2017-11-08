@@ -42,25 +42,25 @@ function createApp(){
 		echo '请指定应用名称！'
 		exit 1
 	else
-		resetContainer phpfpm-"$appName"
+		resetContainer "$appName"
 		phpfpmConfigFile="$DIR"/apps/"$appName"/phpfpm.conf
-		phpfpmImage=$(docker images | grep my/phpfpm"$2")
-		if [ ! -n "$phpfpmImage" ]
+		Image=$(docker images | grep my/app-"$2")
+		if [ ! -n "$Image" ]
 		then
-			docker build -t my/phpfpm"$2" "$DIR"/phpfpm/ -f "$DIR"/phpfpm/Dockerfile-"$2"
+			docker build -t my/app-"$2" "$DIR"/env/ -f "$DIR"/env/"$2"
 		fi
-		if [ -f "$phpfpmConfigFile" ]
+		if [ -f "$ConfigFile" ]
 		then
-			docker run -d --name phpfpm-"$appName" --net=myNet \
+			docker run -d --name "$appName" --net=myNet \
 			-v "$DIR"/apps/"$appName"/htdocs:/htdocs \
 			-v "$DIR"/apps/"$appName"/logs:/logs \
 			-v "$phpfpmConfigFile":/usr/local/etc/php-fpm.d/zz-docker.conf \
-			--restart=always my/phpfpm"$2"
+			--restart=always my/app-"$2"
 		else
-			docker run -d --name phpfpm-"$appName" --net=myNet \
+			docker run -d --name "$appName" --net=myNet \
 			-v "$DIR"/apps/"$appName"/htdocs:/htdocs \
 			-v "$DIR"/apps/"$appName"/logs:/logs \
-			--restart=always my/phpfpm"$2"
+			--restart=always my/app-"$2"
 		fi	
 	fi
 }
@@ -84,7 +84,11 @@ function createContainer(){
       	'mysql') 
 			docker pull mysql
 			resetContainer mysql
-			docker run -d --name mysql --net=myNet -v "$DIR"/mysql/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=12346 --restart=always mysql
+			docker run -d --name mysql --net=myNet \
+			-v "$DIR"/mysql/data:/var/lib/mysql \
+			-e MYSQL_ROOT_PASSWORD=12346 \
+			-p 3306:3306 \
+			--restart=always mysql
       		;;
       	'nginx') 
 			docker build -t my/nginx "$DIR"/nginx
@@ -114,15 +118,16 @@ function createContainer(){
       		;;
    		*) 
 			appName=$(echo ${arg} | cut -d ':' -f1)
-			phpVer=$(echo ${arg} | cut -d ':' -f2)
-			if [ "$phpVer" != "5" ]
+			env=$(echo ${arg} | cut -d ':' -f2)
+			if [ ! -n "$env" ]
 			then
-				phpVer=7
+				echo 请指定应用环境：php5 , php7, golang 之一！
+				exit;
 		    fi
       		appPath="$DIR"/apps/${appName}
 			if [ -d "$appPath" ]
 			then
-				createApp ${appName} ${phpVer}
+				createApp ${appName} ${env}
 				vhostConf="$DIR"/apps/${appName}/vhost.conf
 				if [ -f "$vhostConf" ]
 				then
