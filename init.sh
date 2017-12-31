@@ -49,7 +49,8 @@ function createApp(){
 		then
 			docker build -t my/app-"$2" "$DIR"/env/ -f "$DIR"/env/"$2"
 		fi
-		if [ -f "$ConfigFile" ]
+
+		if [ -f "$phpfpmConfigFile" ]
 		then
 			docker run -d --name "$appName" --net=myNet \
 			-v "$DIR"/apps/"$appName"/htdocs:/htdocs \
