@@ -96,10 +96,10 @@ function createContainer(){
 			resetContainer nginx
 			docker run -d --name nginx --net=myNet \
 			-v "$DIR"/apps:/htdocs \
-			-v "$DIR"/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
-			-v "$DIR"/nginx/conf/conf.d/:/etc/nginx/conf.d \
-			-v "$DIR"/nginx/logs:/logs \
-			-p 80:80 --restart=always my/nginx
+			-v "$DIR"/nginx/conf/:/etc/nginx/ \
+			-v "$DIR"/nginx/ssl:/etc/nginx/ssl \
+            -v "$DIR"/nginx/logs:/logs \
+            -p 80:80 -p 443:443 --restart=always my/nginx
       		;;
    		'gogs') 
       		# 安装版本控制服务器
