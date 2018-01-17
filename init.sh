@@ -119,7 +119,7 @@ function createContainer(){
       		resetContainer jenkins
 			mkdir -p "$DIR"/jenkins/data
 			docker run -d --name jenkins --net=myNet -p 50000:50000 -v "$DIR"/jenkins/data:/var/jenkins_home -v "$DIR"/apps:/htdocs --restart=always my/jenkins
-      		cp -f "$DIR"/jenkins/vhost.conf  "$DIR"/nginx/conf/conf.d/jenkins.conf
+      		cp -f "$DIR"/jenkins/vhost.conf  "$DIR"/ngfinx/conf/conf.d/jenkins.conf
       		docker restart nginx
       		;;
    		*) 
