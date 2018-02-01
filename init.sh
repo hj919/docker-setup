@@ -79,7 +79,7 @@ function createContainer(){
 			resetContainer workerman
 			docker run -d --name workerman --net=myNet \
 			-p 2120:2120 \
-			-v "$DIR"/workerman/htdocs/:/htdocs/ \
+			-v "$DIR"/workerman/bin/:/workerman/ \
 			--restart=always my/workerman
       		;;
    		'redis') 

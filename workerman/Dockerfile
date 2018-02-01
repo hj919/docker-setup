@@ -10,4 +10,4 @@ RUN set -xe \
   && docker-php-ext-install pcntl
 
 
-CMD ["php","htdocs/start.php","start"]
+CMD ["php","workerman/start.php","start"]
