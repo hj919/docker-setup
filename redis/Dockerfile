@@ -1,0 +1,5 @@
+FROM redis:4-alpine
+
+ENV TIMEZONE Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TIMEZONE /etc/localtime
+RUN echo $TIMEZONE > /etc/timezone
