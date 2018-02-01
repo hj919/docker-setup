@@ -69,11 +69,19 @@ function createApp(){
 # 创建容器方法
 function createContainer(){
 	for arg in $@; do  
-		if [ -f "$DIR"/${arg}/locked ]
-		then
-			continue
-		fi
+		#if [ -f "$DIR"/${arg}/locked ]
+		#then
+			#continue
+		#fi
 	case ${arg} in
+        'workerman')
+			docker build -t my/workerman "$DIR"/workerman
+			resetContainer workerman
+			docker run -d --name workerman --net=myNet \
+			-p 2120:2120 \
+			-v "$DIR"/workerman/htdocs/:/htdocs/ \
+			--restart=always my/workerman
+      		;;
    		'redis') 
 			docker build -t my/redis "$DIR"/redis
 			resetContainer redis
