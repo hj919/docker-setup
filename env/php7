@@ -10,7 +10,7 @@ RUN set -xe \
   \
   && apk add --no-cache  --virtual .phpize-deps  $PHPIZE_DEPS \
 
-  && apk add --update --no-cache \
+  && apk add --update --upgrade --no-cache \
         freetype-dev \
         gettext-dev \
         libjpeg-turbo-dev \
