@@ -98,6 +98,7 @@ function createContainer(){
 			resetContainer mysql
 			docker run -d --name mysql --net=myNet \
 			-v "$DIR"/mysql/data:/var/lib/mysql \
+			-v "$DIR"/mysql/my.cnf:/etc/mysql/conf.d/docker.cnf \
 			-e MYSQL_ROOT_PASSWORD=12346 \
 			-p 3306:3306 \
 			--restart=always mysql
