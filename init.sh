@@ -45,7 +45,7 @@ function createApp(){
 		resetContainer "$appName"
 		phpfpmConfigFile="$DIR"/apps/"$appName"/phpfpm.conf
 		crontabFile="$DIR"/apps/"$appName"/crontab
-		Image=$(docker images | grep my/app-"$2")
+		Image=$(docker images | grep 'my/app-"$2"$')
 		if [ ! -n "$Image" ]
 		then
 			docker build -t my/app-"$2" "$DIR"/env/ -f "$DIR"/env/"$2"
