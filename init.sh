@@ -94,7 +94,7 @@ function createContainer(){
 			--restart=always my/redis
       		;;
       	'mysql') 
-			docker pull mysql
+			docker pull registry.docker-cn.com/library/mysql:5.6
 			resetContainer mysql
 			docker run -d --name mysql --net=myNet \
 			-v "$DIR"/mysql/data:/var/lib/mysql \
