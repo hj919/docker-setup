@@ -1,4 +1,4 @@
-FROM php:7.1-fpm
+FROM registry.docker-cn.com/library/php:7.1-fpm
 
 MAINTAINER jie <2273828010@qq.com>
 
@@ -19,7 +19,9 @@ RUN set -xe \
         libmcrypt-dev \
         libpng-dev \
         libbz2-dev \
-   
+    && ln -snf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo "Asia/Shanghai" >  /etc/timezone \
+
     && docker-php-ext-configure gd \
        --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/ \
 
