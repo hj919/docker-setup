@@ -96,12 +96,12 @@ function createContainer(){
       	'mysql') 
 			docker pull registry.docker-cn.com/library/mysql:5.6
 			resetContainer mysql
-			docker run -d --name mysql:5.6 --net=myNet \
+			docker run -d --name mysql --net=myNet \
 			-v "$DIR"/mysql/data:/var/lib/mysql \
 			-v "$DIR"/mysql/my.cnf:/etc/mysql/conf.d/docker.cnf \
 			-e MYSQL_ROOT_PASSWORD=12346 \
 			-p 3306:3306 \
-			--restart=always mysql
+			--restart=always registry.docker-cn.com/library/mysql:5.6
       		;;
       	'nginx') 
 			docker build -t my/nginx "$DIR"/nginx
