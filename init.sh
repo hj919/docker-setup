@@ -116,11 +116,11 @@ function createContainer(){
       		;;
    		'gogs') 
       		# 安装版本控制服务器
-			docker pull gogs/gogs
+			docker pull registry.docker-cn.com/library/gogs/gogs
 			resetContainer gogs
 			mkdir -p "$DIR"/gogs/datainit.shinit.sh
 			# Use `docker run` for the first time.
-			docker run  -d --name=gogs --net=myNet -p 10022:22 -v "$DIR"/gogs/data:/data --restart=always gogs/gogs
+			docker run  -d --name=gogs --net=myNet -p 10022:22 -v "$DIR"/gogs/data:/data --restart=always registry.docker-cn.com/library/gogs/gogs
 			# Use `docker start` if you have stopped it.
 			#docker start gogs
 			cp -f "$DIR"/gogs/vhost.conf  "$DIR"/nginx/conf/conf.d/gogs.conf
