@@ -58,7 +58,7 @@ function createApp(){
 		fi
         if [ -f "$crontabFile" ]
         then
-        	vParam=$vParam" -v $crontabFile:/etc/crontabs/root "
+        	vParam=$vParam" -v $crontabFile:/var/spool/cron/crontabs/root "
         fi
 
 		docker run -d --name "$appName" --net=myNet \
