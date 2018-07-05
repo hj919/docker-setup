@@ -44,7 +44,6 @@ function createApp(){
 	else
 		resetContainer "$appName"
 		phpfpmConfigFile="$DIR"/apps/"$appName"/phpfpm.conf
-		crontabFile="$DIR"/apps/"$appName"/crontab
 		Image=$(docker images | grep -w my/app-$2)
 		if [ ! -n "$Image" ]
 		then
@@ -56,10 +55,6 @@ function createApp(){
 		then
 		    vParam=" -v $phpfpmConfigFile:/usr/local/etc/php-fpm.d/zz-docker.conf "
 		fi
-        if [ -f "$crontabFile" ]
-        then
-        	vParam=$vParam" -v $crontabFile:/var/spool/cron/crontabs/root "
-        fi
 
 		docker run -d --name "$appName" --net=myNet \
 			-v "$DIR"/apps/"$appName"/htdocs:/htdocs \
