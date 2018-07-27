@@ -3,12 +3,13 @@ FROM registry.docker-cn.com/library/php:5.6-fpm-alpine
 MAINTAINER jie <2273828010@qq.com>
 
 RUN set -xe \
-    && echo http://mirrors.aliyun.com/alpine/v3.4/main > /etc/apk/repositories \
-    && echo http://mirrors.aliyun.com/alpine/v3.4/community >> /etc/apk/repositories \
+    && echo http://mirrors.aliyun.com/alpine/v3.7/main > /etc/apk/repositories \
+    && echo http://mirrors.aliyun.com/alpine/v3.7/community >> /etc/apk/repositories \
 
     && apk add --no-cache  --virtual .phpize-deps  $PHPIZE_DEPS \
     && apk add --update --upgrade --no-cache \
         tzdata \
+        libbsd \
         freetype-dev \
         gettext-dev \
         libjpeg-turbo-dev \
